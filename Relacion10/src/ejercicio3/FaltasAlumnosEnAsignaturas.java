@@ -21,17 +21,67 @@ public class FaltasAlumnosEnAsignaturas {
 		int maximofaltas = -1;
 		int alumnoMasFaltas = -1;
 
-		for (int i = 0; i < matrizFaltas.length; i++) {
-			for (int j = 0; j < matrizFaltas[0].length; j++) {
-				if(matrizFaltas[i][j].getInjustificadas()>maximofaltas) {
-					maximofaltas=matrizFaltas[i][j].getInjustificadas();
-					alumnoMasFaltas=j+1;
+		for (int contadorAsignaturas = 0; contadorAsignaturas < matrizFaltas[0].length; contadorAsignaturas++) {
+			maximofaltas=-1;
+			for (int contadorAlumnos = 0; contadorAlumnos < matrizFaltas.length; contadorAlumnos++) {
+				if(matrizFaltas[contadorAlumnos][contadorAsignaturas].getInjustificadas()>maximofaltas) {
+					maximofaltas=matrizFaltas[contadorAlumnos][contadorAsignaturas].getInjustificadas();
+					alumnoMasFaltas=contadorAlumnos+1;
 				}
 			}
-			sb.append(asignaturas[i]+"-> Alumno con mas faltas "+alumnoMasFaltas+" con "+maximofaltas);
+			sb.append(asignaturas[contadorAsignaturas]+"-> Alumno con mas faltas injustificadas "+alumnoMasFaltas+" con "+maximofaltas+"\n");
 		}
-
 		return sb.toString();
+	}
+	
+	public String alumnosConMasRetrasosALaMedia() {
+		StringBuilder sb = new StringBuilder();
+		double mediaTotalRetrasos=0;
+		int totalRetrasosAlumno=0;
+		
+		for (int contadorAsignaturas = 0; contadorAsignaturas < matrizFaltas[0].length; contadorAsignaturas++) {
+			for (int contadorAlumnos = 0; contadorAlumnos < matrizFaltas.length; contadorAlumnos++) {
+				mediaTotalRetrasos=mediaTotalRetrasos+matrizFaltas[contadorAlumnos][contadorAsignaturas].getRetrasos();
+			}
+		}
+		
+		mediaTotalRetrasos=mediaTotalRetrasos/matrizFaltas.length;
+		
+		sb.append("La media de retrasos es "+mediaTotalRetrasos+"\n");
+
+		
+		for (int contadorAlumnos = 0; contadorAlumnos < matrizFaltas.length; contadorAlumnos++) {
+			totalRetrasosAlumno=0;
+			for (int contadorAsignaturas = 0; contadorAsignaturas < matrizFaltas[0].length; contadorAsignaturas++) {
+				totalRetrasosAlumno=totalRetrasosAlumno+matrizFaltas[contadorAlumnos][contadorAsignaturas].getRetrasos();
+			}
+			if(totalRetrasosAlumno>mediaTotalRetrasos) {
+				sb.append("El alumno "+(contadorAlumnos+1)+" tiene "+totalRetrasosAlumno+" retrasos\n");
+			}
+		}
+		
+		
+		
+		return sb.toString();
+	}
+	
+	public String asignaturaConMenosRetrasos() {
+		int totalRetrasosAsignatura=0;
+		int minimoRetrasos= Integer.MAX_VALUE;
+		String asignaturaMenosRetrasos = null;
+		
+		for (int contadorAsignaturas = 0; contadorAsignaturas < matrizFaltas[0].length; contadorAsignaturas++) {
+			totalRetrasosAsignatura=0;
+			for (int contadorAlumnos = 0; contadorAlumnos < matrizFaltas.length; contadorAlumnos++) {
+				totalRetrasosAsignatura=totalRetrasosAsignatura+matrizFaltas[contadorAlumnos][contadorAsignaturas].getRetrasos();
+			}
+			if(totalRetrasosAsignatura<minimoRetrasos) {
+				minimoRetrasos=totalRetrasosAsignatura;
+				asignaturaMenosRetrasos=asignaturas[contadorAsignaturas];
+			}
+		}
+		
+		return "La asignatura con menos retrasos es "+asignaturaMenosRetrasos+" con "+minimoRetrasos+" retrasos";
 	}
 
 	public String toString() {

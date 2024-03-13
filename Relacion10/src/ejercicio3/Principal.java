@@ -7,6 +7,8 @@ public class Principal {
 		
 		System.out.println(faltas);
 		System.out.println(faltas.alumnoConMasFaltasInjustificadasPorAsignatura());
+		System.out.println(faltas.alumnosConMasRetrasosALaMedia());
+		System.out.println(faltas.asignaturaConMenosRetrasos());
 
 	}
 
